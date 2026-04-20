@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Compare Fractions Using Benchmarks — Mr. Martínez</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script>
+window.MathJax = {
+  tex: { inlineMath:[['$','$'],['\\(','\\)']] },
+  svg: { fontCache:'global' },
+  startup: { ready() { MathJax.startup.defaultReady(); } }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+<style>
+:root{
+  --navy:#0D1B2A; --teal:#0E7C7B; --teal-lt:#D6F0EF; --teal-mid:#1AA8A7;
+  --gold:#F4A261; --gold-lt:#FEF3E8; --coral:#E76F51; --coral-lt:#FDEAE4;
+  --sage:#52796F; --sage-lt:#E8F0EE; --purple:#5E4B8B; --purple-lt:#EFECF8;
+  --cream:#F8F5F0; --white:#FFFFFF; --muted:#7A8A8D; --dark:#1A2E35; --border:#D8E0DF;
+  --r:12px; --r-lg:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--cream);font-family:'DM Sans',sans-serif;color:var(--dark);overflow-x:hidden}
+
+/* ── NAV ── */
+.top-nav{
+  position:sticky;top:0;z-index:200;background:var(--navy);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;height:56px;border-bottom:3px solid var(--teal);
+}
+.nav-brand{font-family:'Playfair Display',serif;font-size:16px;color:var(--white);font-weight:700}
+.nav-brand span{color:var(--gold)}
+.nav-links{display:flex;gap:4px}
+.nav-link{
+  padding:6px 14px;border-radius:6px;font-size:13px;font-weight:500;
+  color:rgba(255,255,255,.55);cursor:pointer;transition:all .18s;text-decoration:none;border:none;background:none;
+}
+.nav-link:hover,.nav-link.active{background:rgba(14,124,123,.3);color:var(--teal-mid)}
+
+/* ── HERO ── */
+.hero{
+  background:var(--navy);padding:64px 28px 72px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 20% 60%,rgba(14,124,123,.18),transparent 55%),
+    radial-gradient(ellipse at 80% 20%,rgba(244,162,97,.12),transparent 50%);
+}
+.hero-tag{display:inline-block;background:rgba(14,124,123,.2);border:1px solid rgba(14,124,123,.4);
+  border-radius:50px;padding:5px 18px;font-size:11px;font-weight:600;letter-spacing:2px;
+  text-transform:uppercase;color:var(--teal-mid);margin-bottom:20px;position:relative}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(32px,6vw,68px);
+  color:var(--white);line-height:1.0;position:relative;margin-bottom:14px;font-weight:900}
+.hero h1 em{color:var(--gold);font-style:normal}
+.hero p{font-size:clamp(14px,2vw,17px);color:rgba(255,255,255,.5);font-weight:400;
+  position:relative;margin-bottom:32px;max-width:580px;margin-left:auto;margin-right:auto}
+.hero-chips{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative}
+.hero-chip{padding:8px 18px;border-radius:50px;font-size:13px;font-weight:500;border:1px solid}
+.hc-teal{background:rgba(14,124,123,.15);color:var(--teal-mid);border-color:rgba(14,124,123,.3)}
+.hc-gold{background:rgba(244,162,97,.15);color:var(--gold);border-color:rgba(244,162,97,.3)}
+.hc-coral{background:rgba(231,111,81,.15);color:var(--coral);border-color:rgba(231,111,81,.3)}
+
+/* ── SECTION WRAPPER ── */
+.section{max-width:900px;margin:0 auto;padding:52px 24px}
+.section-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+.sec-num{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-size:18px;font-weight:700;flex-shrink:0}
+.sn-teal{background:var(--teal);color:var(--white)}
+.sn-gold{background:var(--gold);color:var(--dark)}
+.sn-coral{background:var(--coral);color:var(--white)}
+.sn-sage{background:var(--sage);color:var(--white)}
+.sn-purple{background:var(--purple);color:var(--white)}
+.sec-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3.5vw,32px);font-weight:700;color:var(--dark)}
+.sec-sub{font-size:14px;color:var(--muted);margin-top:2px}
+
+.divider{height:1.5px;background:var(--border);max-width:900px;margin:0 auto}
+
+/* ── CARDS ── */
+.card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:22px 24px;margin-bottom:16px}
+.card-teal{background:var(--teal-lt);border-color:rgba(14,124,123,.3)}
+.card-gold{background:var(--gold-lt);border-color:rgba(244,162,97,.35)}
+.card-coral{background:var(--coral-lt);border-color:rgba(231,111,81,.3)}
+.card-sage{background:var(--sage-lt);border-color:rgba(82,121,111,.3)}
+.card-purple{background:var(--purple-lt);border-color:rgba(94,75,139,.3)}
+
+.def-box{background:var(--teal-lt);border-left:5px solid var(--teal);border-radius:0 var(--r) var(--r) 0;padding:18px 22px;margin-bottom:20px}
+.def-box p{font-size:16px;font-weight:500;color:var(--dark);line-height:1.7}
+
+/* ── 3-STEP STRATEGY ── */
+.step-row{display:flex;gap:16px;align-items:flex-start;margin-bottom:14px}
+.step-letter{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Playfair Display',serif;font-weight:700;font-size:18px;flex-shrink:0;margin-top:2px}
+.sl-a{background:var(--teal);color:var(--white)}
+.sl-b{background:var(--gold);color:var(--dark)}
+.sl-c{background:var(--coral);color:var(--white)}
+.step-body h4{font-size:16px;font-weight:600;color:var(--dark);margin-bottom:4px}
+.step-body p{font-size:14px;color:#444;line-height:1.65}
+.step-example{background:var(--navy);border-radius:8px;padding:10px 16px;margin-top:8px;
+  font-size:14px;font-weight:500;color:var(--white);display:inline-block}
+
+/* ── NUMBER LINE ── */
+.nl-container{margin:8px 0 16px}
+.nl-label{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.nl-svg-wrap{overflow-x:auto}
+svg.nl{display:block;width:100%;max-width:680px;margin:0 auto}
+
+/* ── PRACTICE GRID ── */
+.prob-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:4px}
+.prob-card{
+  background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);
+  padding:18px 16px;display:flex;flex-direction:column;gap:10px;
+  transition:border-color .18s,box-shadow .18s;
+}
+.prob-card:hover{border-color:var(--teal);box-shadow:0 4px 16px rgba(14,124,123,.1)}
+.prob-fracs{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 0}
+.prob-circle{
+  width:44px;height:44px;border-radius:50%;border:2px dashed var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;font-weight:700;color:var(--muted);cursor:pointer;
+  transition:all .15s;user-select:none;flex-shrink:0;
+}
+.prob-circle:hover{border-color:var(--teal);color:var(--teal)}
+.prob-circle.selected-lt{border:2px solid var(--teal);background:var(--teal-lt);color:var(--teal)}
+.prob-circle.selected-gt{border:2px solid var(--coral);background:var(--coral-lt);color:var(--coral)}
+.prob-circle.correct{border:2px solid #27A864;background:#E8F9EE;color:#27A864}
+.prob-circle.wrong{border:2px solid var(--coral);background:var(--coral-lt);color:var(--coral)}
+.prob-hint{font-size:11px;color:var(--muted);text-align:center;min-height:14px;font-style:italic}
+.prob-feedback{font-size:12px;font-weight:600;text-align:center;min-height:16px}
+.fb-ok{color:#27A864}.fb-no{color:var(--coral)}
+.check-btn{
+  background:var(--teal);color:var(--white);border:none;border-radius:8px;
+  padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;
+  transition:background .15s;font-family:'DM Sans',sans-serif;
+}
+.check-btn:hover{background:var(--teal-mid)}
+.check-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+
+/* ── WORD PROBLEMS ── */
+.wp-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:22px 24px;margin-bottom:14px}
+.wp-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;
+  border-radius:50%;background:var(--teal);color:var(--white);font-size:13px;font-weight:700;
+  flex-shrink:0;margin-right:10px}
+.wp-q{font-size:15px;color:var(--dark);line-height:1.7;margin-bottom:14px;display:flex;align-items:flex-start}
+.wp-choices{display:flex;gap:8px;flex-wrap:wrap}
+.wp-choice{
+  padding:8px 16px;border-radius:8px;border:1.5px solid var(--border);
+  font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;background:var(--white);
+  font-family:'DM Sans',sans-serif;color:var(--dark);
+}
+.wp-choice:hover{border-color:var(--teal);color:var(--teal)}
+.wp-choice.selected{background:var(--teal-lt);border-color:var(--teal);color:var(--teal)}
+.wp-choice.correct{background:#E8F9EE;border-color:#27A864;color:#27A864}
+.wp-choice.wrong{background:var(--coral-lt);border-color:var(--coral);color:var(--coral)}
+.wp-fb{font-size:13px;font-weight:500;margin-top:10px;min-height:18px}
+
+/* ── SCORE PANEL ── */
+.score-panel{
+  background:var(--navy);border-radius:var(--r-lg);padding:24px 28px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  margin-top:8px;
+}
+.score-stat{text-align:center}
+.score-stat .num{font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:var(--gold)}
+.score-stat .lbl{font-size:12px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:.5px;text-transform:uppercase}
+.reset-btn{background:var(--teal);color:var(--white);border:none;border-radius:8px;
+  padding:10px 22px;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .15s}
+.reset-btn:hover{background:var(--teal-mid)}
+
+/* ── REVIEW TABLE ── */
+.rev-table{width:100%;border-collapse:collapse;font-size:14px}
+.rev-table th{background:var(--navy);color:var(--gold);padding:10px 14px;text-align:left;
+  font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.rev-table td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+.rev-table tr:last-child td{border-bottom:none}
+.rev-table tr:nth-child(even) td{background:var(--cream)}
+.badge{display:inline-block;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:600}
+.badge-ok{background:#E8F9EE;color:#27A864}
+.badge-no{background:var(--coral-lt);color:var(--coral)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:560px){
+  .prob-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .score-panel{flex-direction:column;text-align:center}
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.section{animation:fadeUp .5s both}
+.section:nth-child(1){animation-delay:.05s}
+.section:nth-child(2){animation-delay:.10s}
+.section:nth-child(3){animation-delay:.15s}
+.section:nth-child(4){animation-delay:.20s}
+.section:nth-child(5){animation-delay:.25s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="top-nav">
+  <div class="nav-brand">Mr. <span>Martínez</span> · Lesson 11.2</div>
+  <div class="nav-links">
+    <a class="nav-link" href="#sec-concept">Concept</a>
+    <a class="nav-link" href="#sec-strategy">Strategy</a>
+    <a class="nav-link" href="#sec-examples">Examples</a>
+    <a class="nav-link" href="#sec-numberline">Number Line</a>
+    <a class="nav-link" href="#sec-practice">Practice</a>
+    <a class="nav-link" href="#sec-word">Word Problems</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-tag">Lesson 11.2 · Module 11</div>
+  <h1>Compare Fractions<br>Using <em>Benchmarks</em></h1>
+  <p>Master the ½ benchmark strategy to compare any two fractions — fast, clearly, and with full reasoning.</p>
+  <div class="hero-chips">
+    <span class="hero-chip hc-teal">3-Step Strategy</span>
+    <span class="hero-chip hc-gold">Number Line Visuals</span>
+    <span class="hero-chip hc-coral">20+ Practice Problems</span>
+  </div>
+</header>
+
+<!-- ══ SECTION 1: KEY CONCEPT ══ -->
+<section class="section" id="sec-concept">
+  <div class="section-header">
+    <div class="sec-num sn-teal">1</div>
+    <div>
+      <div class="sec-title">What Is a Benchmark Fraction?</div>
+      <div class="sec-sub">The foundational idea behind today's strategy</div>
+    </div>
+  </div>
+
+  <div class="def-box">
+    <p>A <strong>benchmark</strong> is a number you know really well that helps you understand and compare other numbers. Our benchmark today is <strong>$\dfrac{1}{2}$</strong> — the exact middle between 0 and 1.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">
+    <div class="card card-teal">
+      <h4 style="font-size:15px;font-weight:600;color:var(--teal);margin-bottom:8px">Our benchmark today</h4>
+      <p style="font-size:14px;line-height:1.7">The fraction $\dfrac{1}{2}$ sits exactly in the middle between 0 and 1. Every fraction is either <em>less than</em>, <em>equal to</em>, or <em>greater than</em> $\dfrac{1}{2}$.</p>
+    </div>
+    <div class="card card-gold">
+      <h4 style="font-size:15px;font-weight:600;color:#B86A00;margin-bottom:8px">Why ½ is so powerful</h4>
+      <p style="font-size:14px;line-height:1.7">If one fraction is <em>less than</em> $\dfrac{1}{2}$ and another is <em>greater than</em> $\dfrac{1}{2}$, you already know which is bigger — without doing hard math!</p>
+    </div>
+    <div class="card card-sage">
+      <h4 style="font-size:15px;font-weight:600;color:var(--sage);margin-bottom:8px">The quick check rule</h4>
+      <p style="font-size:14px;line-height:1.7">Ask: <em>Is the numerator less than half the denominator?</em><br>
+      YES → fraction $< \dfrac{1}{2}$<br>
+      NO &nbsp;→ fraction $> \dfrac{1}{2}$</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SECTION 2: 3-STEP STRATEGY ══ -->
+<section class="section" id="sec-strategy">
+  <div class="section-header">
+    <div class="sec-num sn-gold">2</div>
+    <div>
+      <div class="sec-title">The 3-Step Strategy</div>
+      <div class="sec-sub">Use steps A → B → C to compare any two fractions</div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:28px">
+    <div class="step-row">
+      <div class="step-letter sl-a">A</div>
+      <div class="step-body">
+        <h4>Compare the 1st fraction to $\dfrac{1}{2}$</h4>
+        <p>Ask: is the numerator less than half the denominator?<br>
+        If <strong>yes</strong> → fraction $< \dfrac{1}{2}$ &nbsp;|&nbsp; If <strong>no</strong> → fraction $> \dfrac{1}{2}$</p>
+        <div class="step-example">
+          Example: $\dfrac{3}{8}$ — half of 8 is 4. Since 3 &lt; 4, we know $\dfrac{3}{8} < \dfrac{1}{2}$
+        </div>
+      </div>
+    </div>
+
+    <div style="width:2px;height:20px;background:var(--border);margin:4px 0 4px 21px"></div>
+
+    <div class="step-row">
+      <div class="step-letter sl-b">B</div>
+      <div class="step-body">
+        <h4>Compare the 2nd fraction to $\dfrac{1}{2}$</h4>
+        <p>Do the exact same check for the other fraction.</p>
+        <div class="step-example" style="background:#3A2E00">
+          Example: $\dfrac{2}{3}$ — half of 3 is 1.5. Since 2 &gt; 1.5, we know $\dfrac{2}{3} > \dfrac{1}{2}$
+        </div>
+      </div>
+    </div>
+
+    <div style="width:2px;height:20px;background:var(--border);margin:4px 0 4px 21px"></div>
+
+    <div class="step-row">
+      <div class="step-letter sl-c">C</div>
+      <div class="step-body">
+        <h4>Chain your comparisons</h4>
+        <p>If fraction A $< \dfrac{1}{2}$ and $\dfrac{1}{2} <$ fraction B, then fraction A $<$ fraction B. Connect the results!</p>
+        <div class="step-example" style="background:#4A1A0A">
+          $\dfrac{3}{8} < \dfrac{1}{2}$ &nbsp;and&nbsp; $\dfrac{1}{2} < \dfrac{2}{3}$ &nbsp;→&nbsp; so $\dfrac{3}{8} < \dfrac{2}{3}$ ✓
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SECTION 3: WORKED EXAMPLES ══ -->
+<section class="section" id="sec-examples">
+  <div class="section-header">
+    <div class="sec-num sn-coral">3</div>
+    <div>
+      <div class="sec-title">Worked Examples</div>
+      <div class="sec-sub">Watch the A → B → C strategy in action</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px">
+
+    <!-- Example 1 -->
+    <div class="card">
+      <p style="font-size:13px;font-weight:600;color:var(--teal);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Example 1</p>
+      <p style="font-size:16px;font-weight:600;margin-bottom:14px">Compare $\dfrac{5}{8}$ and $\dfrac{4}{10}$</p>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+        <div style="background:var(--teal-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--teal)">
+          <strong style="color:var(--teal)">Step A:</strong> $\dfrac{5}{8}$ — half of 8 is 4. Since 5 &gt; 4,&nbsp; $\dfrac{5}{8} > \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--gold-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--gold)">
+          <strong style="color:#B86A00">Step B:</strong> $\dfrac{4}{10}$ — half of 10 is 5. Since 4 &lt; 5,&nbsp; $\dfrac{4}{10} < \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--coral-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--coral)">
+          <strong style="color:var(--coral)">Step C:</strong> $\dfrac{5}{8} > \dfrac{1}{2}$ and $\dfrac{4}{10} < \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--navy);border-radius:8px;padding:10px 12px;text-align:center">
+          <span style="color:var(--gold);font-weight:700;font-size:16px">$\dfrac{5}{8} > \dfrac{4}{10}$ ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 2 -->
+    <div class="card">
+      <p style="font-size:13px;font-weight:600;color:var(--sage);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Example 2</p>
+      <p style="font-size:16px;font-weight:600;margin-bottom:14px">Compare $\dfrac{2}{5}$ and $\dfrac{3}{4}$</p>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+        <div style="background:var(--teal-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--teal)">
+          <strong style="color:var(--teal)">Step A:</strong> $\dfrac{2}{5}$ — half of 5 is 2.5. Since 2 &lt; 2.5,&nbsp; $\dfrac{2}{5} < \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--gold-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--gold)">
+          <strong style="color:#B86A00">Step B:</strong> $\dfrac{3}{4}$ — half of 4 is 2. Since 3 &gt; 2,&nbsp; $\dfrac{3}{4} > \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--coral-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--coral)">
+          <strong style="color:var(--coral)">Step C:</strong> $\dfrac{2}{5} < \dfrac{1}{2}$ and $\dfrac{3}{4} > \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--navy);border-radius:8px;padding:10px 12px;text-align:center">
+          <span style="color:var(--gold);font-weight:700;font-size:16px">$\dfrac{2}{5} < \dfrac{3}{4}$ ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 3 -->
+    <div class="card">
+      <p style="font-size:13px;font-weight:600;color:var(--purple);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Example 3</p>
+      <p style="font-size:16px;font-weight:600;margin-bottom:14px">Compare $\dfrac{7}{10}$ and $\dfrac{4}{9}$</p>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+        <div style="background:var(--teal-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--teal)">
+          <strong style="color:var(--teal)">Step A:</strong> $\dfrac{7}{10}$ — half of 10 is 5. Since 7 &gt; 5,&nbsp; $\dfrac{7}{10} > \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--gold-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--gold)">
+          <strong style="color:#B86A00">Step B:</strong> $\dfrac{4}{9}$ — half of 9 is 4.5. Since 4 &lt; 4.5,&nbsp; $\dfrac{4}{9} < \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--coral-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--coral)">
+          <strong style="color:var(--coral)">Step C:</strong> $\dfrac{7}{10} > \dfrac{1}{2}$ and $\dfrac{4}{9} < \dfrac{1}{2}$
+        </div>
+        <div style="background:var(--navy);border-radius:8px;padding:10px 12px;text-align:center">
+          <span style="color:var(--gold);font-weight:700;font-size:16px">$\dfrac{7}{10} > \dfrac{4}{9}$ ✓</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Example 4 — both > 1/2 -->
+    <div class="card card-purple">
+      <p style="font-size:13px;font-weight:600;color:var(--purple);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">Example 4 — Tricky!</p>
+      <p style="font-size:16px;font-weight:600;margin-bottom:14px">Compare $\dfrac{3}{4}$ and $\dfrac{7}{8}$</p>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:13px">
+        <div style="background:rgba(94,75,139,.1);border-radius:8px;padding:8px 12px;border-left:3px solid var(--purple)">
+          Both fractions are <em>greater than</em> $\dfrac{1}{2}$. When both are on the same side, look at how close each is to 1.
+        </div>
+        <div style="background:var(--teal-lt);border-radius:8px;padding:8px 12px;border-left:3px solid var(--teal)">
+          $\dfrac{3}{4}$ = 3 out of 4 pieces. $\dfrac{7}{8}$ = 7 out of 8 pieces. $\dfrac{7}{8}$ is closer to 1 whole.
+        </div>
+        <div style="background:var(--navy);border-radius:8px;padding:10px 12px;text-align:center">
+          <span style="color:var(--gold);font-weight:700;font-size:16px">$\dfrac{3}{4} < \dfrac{7}{8}$ ✓</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SECTION 4: NUMBER LINE ══ -->
+<section class="section" id="sec-numberline">
+  <div class="section-header">
+    <div class="sec-num sn-sage">4</div>
+    <div>
+      <div class="sec-title">See It on the Number Line</div>
+      <div class="sec-sub">Left of ½ = smaller · Right of ½ = larger</div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:28px">
+    <p style="font-size:14px;color:var(--muted);margin-bottom:20px">Each dot shows where a fraction sits relative to $\dfrac{1}{2}$. The key insight: everything <strong>left</strong> of the benchmark is smaller, everything <strong>right</strong> is larger.</p>
+
+    <!-- interactive number line -->
+    <svg class="nl" viewBox="0 0 640 280" xmlns="http://www.w3.org/2000/svg" style="max-width:640px">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="#1A2E35"/>
+        </marker>
+      </defs>
+
+      <!-- Row 1: 3/8 -->
+      <text x="8" y="44" font-size="12" fill="#7A8A8D" font-family="DM Sans">Tasha — 3/8 mile</text>
+      <line x1="60" y1="60" x2="600" y2="60" stroke="#D8E0DF" stroke-width="2.5" marker-end="url(#arr)"/>
+      <!-- ticks -->
+      <line x1="60" y1="54" x2="60" y2="66" stroke="#1A2E35" stroke-width="2"/>
+      <text x="54" y="80" font-size="11" fill="#1A2E35" font-family="DM Sans">0</text>
+      <line x1="590" y1="54" x2="590" y2="66" stroke="#1A2E35" stroke-width="2"/>
+      <text x="586" y="80" font-size="11" fill="#1A2E35" font-family="DM Sans">1</text>
+      <!-- half marker -->
+      <line x1="325" y1="50" x2="325" y2="70" stroke="#52796F" stroke-width="2"/>
+      <text x="316" y="82" font-size="11" fill="#52796F" font-weight="bold" font-family="DM Sans">½</text>
+      <!-- dot at 3/8 = 37.5% -->
+      <circle cx="263" cy="60" r="9" fill="#0E7C7B"/>
+      <text x="250" y="48" font-size="13" fill="#0E7C7B" font-weight="bold" font-family="DM Sans">3/8</text>
+      <text x="230" y="92" font-size="11" fill="#0E7C7B" font-family="DM Sans">&lt; ½ (left side)</text>
+
+      <!-- Row 2: 2/3 -->
+      <text x="8" y="124" font-size="12" fill="#7A8A8D" font-family="DM Sans">Paul — 2/3 mile</text>
+      <line x1="60" y1="140" x2="600" y2="140" stroke="#D8E0DF" stroke-width="2.5" marker-end="url(#arr)"/>
+      <line x1="60" y1="134" x2="60" y2="146" stroke="#1A2E35" stroke-width="2"/>
+      <text x="54" y="160" font-size="11" fill="#1A2E35" font-family="DM Sans">0</text>
+      <line x1="590" y1="134" x2="590" y2="146" stroke="#1A2E35" stroke-width="2"/>
+      <text x="586" y="160" font-size="11" fill="#1A2E35" font-family="DM Sans">1</text>
+      <line x1="325" y1="130" x2="325" y2="150" stroke="#52796F" stroke-width="2"/>
+      <text x="316" y="162" font-size="11" fill="#52796F" font-weight="bold" font-family="DM Sans">½</text>
+      <!-- dot at 2/3 = 66.7% -->
+      <circle cx="377" cy="140" r="9" fill="#E76F51"/>
+      <text x="365" y="128" font-size="13" fill="#E76F51" font-weight="bold" font-family="DM Sans">2/3</text>
+      <text x="360" y="172" font-size="11" fill="#E76F51" font-family="DM Sans">&gt; ½ (right side)</text>
+
+      <!-- Row 3: 7/8 and 5/12 -->
+      <text x="8" y="204" font-size="12" fill="#7A8A8D" font-family="DM Sans">Compare 7/8 and 5/12</text>
+      <line x1="60" y1="220" x2="600" y2="220" stroke="#D8E0DF" stroke-width="2.5" marker-end="url(#arr)"/>
+      <line x1="60" y1="214" x2="60" y2="226" stroke="#1A2E35" stroke-width="2"/>
+      <text x="54" y="240" font-size="11" fill="#1A2E35" font-family="DM Sans">0</text>
+      <line x1="590" y1="214" x2="590" y2="226" stroke="#1A2E35" stroke-width="2"/>
+      <text x="586" y="240" font-size="11" fill="#1A2E35" font-family="DM Sans">1</text>
+      <line x1="325" y1="210" x2="325" y2="230" stroke="#52796F" stroke-width="2"/>
+      <text x="316" y="242" font-size="11" fill="#52796F" font-weight="bold" font-family="DM Sans">½</text>
+      <!-- 5/12 = 41.7% = 235 -->
+      <circle cx="235" cy="220" r="9" fill="#5E4B8B"/>
+      <text x="222" y="208" font-size="11" fill="#5E4B8B" font-weight="bold" font-family="DM Sans">5/12</text>
+      <!-- 7/8 = 87.5% = 498 -->
+      <circle cx="498" cy="220" r="9" fill="#F4A261"/>
+      <text x="487" y="208" font-size="11" fill="#B86A00" font-weight="bold" font-family="DM Sans">7/8</text>
+      <text x="200" y="258" font-size="11" fill="#5E4B8B" font-family="DM Sans">5/12 &lt; ½</text>
+      <text x="460" y="258" font-size="11" fill="#B86A00" font-family="DM Sans">7/8 &gt; ½</text>
+    </svg>
+
+    <div style="background:var(--navy);border-radius:10px;padding:14px 18px;margin-top:16px">
+      <p style="color:var(--gold);font-weight:600;font-size:14px">Key takeaway: Since $\dfrac{3}{8}$ is on the LEFT and $\dfrac{2}{3}$ is on the RIGHT of $\dfrac{1}{2}$, we know $\dfrac{3}{8} < \dfrac{2}{3}$ — no calculation needed!</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SECTION 5: PRACTICE ══ -->
+<section class="section" id="sec-practice">
+  <div class="section-header">
+    <div class="sec-num sn-purple">5</div>
+    <div>
+      <div class="sec-title">Practice Problems</div>
+      <div class="sec-sub">Click &lt; or &gt;, then press Check. Use Steps A → B → C!</div>
+    </div>
+  </div>
+
+  <div class="score-panel" style="margin-bottom:20px">
+    <div class="score-stat"><div class="num" id="score-correct">0</div><div class="lbl">Correct</div></div>
+    <div class="score-stat"><div class="num" id="score-total">0</div><div class="lbl">Attempted</div></div>
+    <div class="score-stat"><div class="num" id="score-pct">—</div><div class="lbl">Accuracy</div></div>
+    <button class="reset-btn" onclick="resetAll()">Reset All</button>
+  </div>
+
+  <div class="prob-grid" id="prob-grid"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SECTION 6: WORD PROBLEMS ══ -->
+<section class="section" id="sec-word">
+  <div class="section-header">
+    <div class="sec-num sn-coral">6</div>
+    <div>
+      <div class="sec-title">Word Problems</div>
+      <div class="sec-sub">Apply the benchmark strategy to real-life situations</div>
+    </div>
+  </div>
+
+  <div id="word-container"></div>
+</section>
+
+<!-- ══ SECTION 7: REVIEW TABLE ══ -->
+<section class="section">
+  <div class="section-header">
+    <div class="sec-num sn-teal">7</div>
+    <div>
+      <div class="sec-title">Strategy Quick Reference</div>
+      <div class="sec-sub">A cheat-sheet to keep by your side while you work</div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:0;overflow:hidden">
+    <table class="rev-table">
+      <thead>
+        <tr>
+          <th>Fraction</th>
+          <th>Half the Denominator</th>
+          <th>Numerator vs Half</th>
+          <th>Compared to ½</th>
+        </tr>
+      </thead>
+      <tbody id="ref-table"></tbody>
+    </table>
+  </div>
+</section>
+
+<footer style="background:var(--navy);padding:28px;text-align:center">
+  <p style="color:rgba(255,255,255,.4);font-size:13px">Lesson 11.2 — Compare Fractions Using Benchmarks &nbsp;·&nbsp; <strong style="color:rgba(255,255,255,.65)">Mr. Martínez</strong> &nbsp;·&nbsp; 3rd Grade Mathematics</p>
+</footer>
+
+<script>
+// ── CSS FRACTION HELPER (no MathJax needed for dynamic content) ──────────
+function f(n, d, color) {
+  const c = color ? `color:${color};` : '';
+  return `<span style="display:inline-flex;flex-direction:column;align-items:center;
+    line-height:1.1;vertical-align:middle;margin:0 2px;${c}">
+    <span style="font-size:.82em;font-weight:700;border-bottom:1.5px solid currentColor;
+      padding-bottom:1px;min-width:1em;text-align:center">${n}</span>
+    <span style="font-size:.82em;font-weight:700;padding-top:1px;min-width:1em;
+      text-align:center">${d}</span>
+  </span>`;
+}
+const HALF = f(1,2);
+
+// ── PRACTICE PROBLEMS DATA ─────────────────────────────────────────────
+const PROBLEMS = [
+  {a:[5,12], b:[6,8],  ans:'<', hint:'5/12 < ½  and  6/8 > ½'},
+  {a:[4,6],  b:[2,5],  ans:'>', hint:'4/6 > ½  and  2/5 < ½'},
+  {a:[7,10], b:[4,3],  ans:'<', hint:'7/10 < 1  and  4/3 > 1'},
+  {a:[3,8],  b:[4,6],  ans:'<', hint:'3/8 < ½  and  4/6 > ½'},
+  {a:[7,8],  b:[5,12], ans:'>', hint:'7/8 > ½  and  5/12 < ½'},
+  {a:[3,4],  b:[7,8],  ans:'<', hint:'Both > ½; 7/8 is closer to 1'},
+  {a:[1,6],  b:[3,4],  ans:'<', hint:'1/6 < ½  and  3/4 > ½'},
+  {a:[5,8],  b:[3,10], ans:'>', hint:'5/8 > ½  and  3/10 < ½'},
+  {a:[2,3],  b:[1,4],  ans:'>', hint:'2/3 > ½  and  1/4 < ½'},
+  {a:[9,10], b:[3,5],  ans:'>', hint:'Both > ½; 9/10 is closer to 1'},
+  {a:[1,3],  b:[2,5],  ans:'>', hint:'1/3 < ½  and  2/5 < ½; but 1/3 > 2/5'},
+  {a:[5,6],  b:[7,10], ans:'>', hint:'Both > ½; 5/6 is closer to 1'},
+  {a:[3,10], b:[2,6],  ans:'<', hint:'3/10 < ½  and  2/6 = 1/3 < ½; but 1/3 > 3/10'},
+  {a:[4,8],  b:[5,10], ans:'=', hint:'4/8 = ½  and  5/10 = ½  — they are equal!'},
+  {a:[6,10], b:[3,6],  ans:'>', hint:'6/10 > ½  and  3/6 = ½'},
+  {a:[1,8],  b:[1,4],  ans:'<', hint:'Both < ½; 1/4 is bigger (larger piece)'},
+  {a:[5,9],  b:[4,7],  ans:'<', hint:'Both > ½; 4/7 is slightly bigger'},
+  {a:[3,5],  b:[4,9],  ans:'>', hint:'3/5 > ½  and  4/9 < ½'},
+  {a:[7,12], b:[5,8],  ans:'<', hint:'Both > ½; 5/8 is bigger'},
+  {a:[2,7],  b:[3,8],  ans:'>', hint:'Both < ½; 2/7 is bigger than 3/8'},
+];
+
+// ── WORD PROBLEMS DATA ─────────────────────────────────────────────────
+const WORD_PROBLEMS = [
+  {
+    q:`Tina has two paint cans. One is ${f(4,10)} full and the other is ${f(5,8)} full.
+       Which can is <em>less than</em> ${HALF} full?`,
+    choices:[`The ${f(4,10)} can`, `The ${f(5,8)} can`, `Both are less than ${HALF}`, 'Neither'],
+    correct:0,
+    explain:`${f(4,10)}: half of 10 is 5. Since 4 &lt; 5, &nbsp;${f(4,10)} &lt; ${HALF}. &nbsp;The <strong>4/10 can</strong> is less than half full.`
+  },
+  {
+    q:`Giraffes sleep about ${f(1,6)} of the day. Lions sleep about ${f(3,4)} of the day.
+       Which animal sleeps <em>more</em>? (Herbivores sleep less than carnivores.)`,
+    choices:['Giraffes 🦒','Lions 🦁','They sleep the same','Cannot tell'],
+    correct:1,
+    explain:`${f(1,6)} &lt; ${HALF} &nbsp;and&nbsp; ${f(3,4)} &gt; ${HALF}, so <strong>lions sleep more</strong>. The giraffe is the herbivore (sleeps less).`
+  },
+  {
+    q:`Josh helps at the school fair for ${f(3,8)} of the day. Sarai helps for ${f(8,12)} of the day.
+       Who helps for a <em>longer</em> time?`,
+    choices:['Josh','Sarai','They help the same','Cannot compare'],
+    correct:1,
+    explain:`${f(3,8)} &lt; ${HALF} (3 &lt; 4). &nbsp;${f(8,12)} &gt; ${HALF} (8 &gt; 6). So <strong>Sarai helps longer</strong>.`
+  },
+  {
+    q:`Jax's recipe uses ${f(7,8)} teaspoon of baking soda and ${f(1,4)} teaspoon of vanilla.
+       Does he use <em>more</em> baking soda or vanilla?`,
+    choices:['More baking soda 🧂','More vanilla 🍦','Equal amounts','Cannot tell'],
+    correct:0,
+    explain:`${f(7,8)} &gt; ${HALF} (7 &gt; 4) &nbsp;and&nbsp; ${f(1,4)} &lt; ${HALF} (1 &lt; 2).
+      So ${f(7,8)} &gt; ${f(1,4)}: <strong>more baking soda</strong>.`
+  },
+  {
+    q:`Maura is comparing ${f(3,5)} and ${f(2,10)}. Which fraction is <em>greater</em>?`,
+    choices:[`${f(3,5)} is greater`, `${f(2,10)} is greater`, 'They are equal','Need more info'],
+    correct:0,
+    explain:`${f(3,5)}: half of 5 is 2.5, and 3 &gt; 2.5, so ${f(3,5)} &gt; ${HALF}.
+      ${f(2,10)}: half of 10 is 5, and 2 &lt; 5, so ${f(2,10)} &lt; ${HALF}.
+      Therefore <strong>${f(3,5)} &gt; ${f(2,10)}</strong>.`
+  },
+  {
+    q:`Sal's pizza: peppers cover ${f(3,5)} and mushrooms cover ${f(1,3)}.
+       Which topping covers <em>more</em> of the pizza?`,
+    choices:[`Peppers ${f(3,5)}`, `Mushrooms ${f(1,3)}`,'They cover the same','Cannot tell'],
+    correct:0,
+    explain:`${f(3,5)} &gt; ${HALF} (3 &gt; 2.5). &nbsp;${f(1,3)} &lt; ${HALF} (1 &lt; 1.5).
+      So <strong>peppers cover more</strong> of the pizza.`
+  },
+];
+
+// ── REFERENCE TABLE DATA ────────────────────────────────────────────────
+const REF_ROWS = [
+  [3,8],[5,12],[2,5],[7,10],[4,6],[1,4],[3,4],[7,8],[2,3],[5,9],[3,10],[4,7],
+];
+
+// ── STATE ───────────────────────────────────────────────────────────────
+let probState = {}; // id -> {chosen, checked, correct}
+let correct=0, attempted=0;
+
+// ── BUILD PRACTICE GRID ─────────────────────────────────────────────────
+function frac(n, d, color) { return f(n, d, color); }
+
+function buildProblems() {
+  const grid = document.getElementById('prob-grid');
+  grid.innerHTML = '';
+  PROBLEMS.forEach((p, i) => {
+    probState[i] = {chosen:null, checked:false, correct:null};
+    const card = document.createElement('div');
+    card.className = 'prob-card';
+    card.id = `prob-${i}`;
+    const sym = p.ans === '=' ? '=' : '';
+    card.innerHTML = `
+      <div style="font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px">Problem ${i+1}</div>
+      <div class="prob-fracs">
+        <span style="font-size:18px;font-weight:700;color:var(--teal)">${frac(p.a[0],p.a[1])}</span>
+        <div class="prob-circle" id="clt-${i}" onclick="pickSym(${i},'<')"><</div>
+        <div class="prob-circle" id="ceq-${i}" onclick="pickSym(${i},'=')" style="${p.ans==='='?'':''}">= </div>
+        <div class="prob-circle" id="cgt-${i}" onclick="pickSym(${i},'>')">></div>
+        <span style="font-size:18px;font-weight:700;color:var(--coral)">${frac(p.b[0],p.b[1])}</span>
+      </div>
+      <div class="prob-hint" id="hint-${i}">Step A → B → C</div>
+      <div class="prob-feedback" id="fb-${i}"></div>
+      <button class="check-btn" id="chk-${i}" onclick="checkProb(${i})">Check</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function pickSym(id, sym) {
+  if (probState[id].checked) return;
+  probState[id].chosen = sym;
+  // update circles
+  ['<','=','>'].forEach(s => {
+    const map = {'<':`clt-${id}`, '=':`ceq-${id}`, '>':`cgt-${id}`};
+    const el = document.getElementById(map[s]);
+    el.className = 'prob-circle' + (s===sym ? (s==='<'?' selected-lt':s==='>'?' selected-gt':' selected-lt') : '');
+  });
+}
+
+function checkProb(id) {
+  const p = PROBLEMS[id];
+  const st = probState[id];
+  if (!st.chosen) { document.getElementById(`fb-${id}`).textContent='Pick a symbol first!'; return; }
+  if (st.checked) return;
+  st.checked = true;
+  st.correct = (st.chosen === p.ans);
+  attempted++;
+  if (st.correct) correct++;
+  updateScore();
+
+  const fb = document.getElementById(`fb-${id}`);
+  const hint = document.getElementById(`hint-${id}`);
+  const btn = document.getElementById(`chk-${id}`);
+  btn.disabled = true;
+
+  const symMap = {'<':`clt-${id}`, '=':`ceq-${id}`, '>':`cgt-${id}`};
+  const chosenEl = document.getElementById(symMap[st.chosen]);
+  const correctEl = document.getElementById(symMap[p.ans]);
+
+  if (st.correct) {
+    chosenEl.className = 'prob-circle correct';
+    fb.textContent = '✓ Correct!';
+    fb.className = 'prob-feedback fb-ok';
+  } else {
+    chosenEl.className = 'prob-circle wrong';
+    correctEl.className = 'prob-circle correct';
+    fb.textContent = `✗ The answer is "${p.ans}"`;
+    fb.className = 'prob-feedback fb-no';
+  }
+  hint.textContent = p.hint;
+}
+
+function updateScore() {
+  document.getElementById('score-correct').textContent = correct;
+  document.getElementById('score-total').textContent = attempted;
+  document.getElementById('score-pct').textContent = attempted > 0 ?
+    Math.round(correct/attempted*100)+'%' : '—';
+}
+
+function resetAll() {
+  correct = 0; attempted = 0;
+  updateScore();
+  buildProblems();
+  buildWordProblems();
+}
+
+// ── BUILD WORD PROBLEMS ─────────────────────────────────────────────────
+function buildWordProblems() {
+  const container = document.getElementById('word-container');
+  container.innerHTML = '';
+  WORD_PROBLEMS.forEach((wp, i) => {
+    const div = document.createElement('div');
+    div.className = 'wp-card';
+    div.id = `wp-${i}`;
+    const choicesHtml = wp.choices.map((ch, j) =>
+      `<button class="wp-choice" id="wpc-${i}-${j}" onclick="pickWP(${i},${j})">${ch}</button>`
+    ).join('');
+    div.innerHTML = `
+      <div class="wp-q">
+        <span class="wp-num">${i+1}</span>
+        <span>${wp.q}</span>
+      </div>
+      <div class="wp-choices" style="margin-bottom:10px">${choicesHtml}</div>
+      <div class="wp-fb" id="wpfb-${i}"></div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function pickWP(id, chosen) {
+  const wp = WORD_PROBLEMS[id];
+  // lock if already answered
+  if (document.getElementById(`wpc-${id}-${wp.correct}`).classList.contains('correct')) return;
+
+  // reset all, then mark correct/wrong
+  wp.choices.forEach((_, j) => {
+    const el = document.getElementById(`wpc-${id}-${j}`);
+    if (j === wp.correct)            el.className = 'wp-choice correct';
+    else if (j === chosen)           el.className = 'wp-choice wrong';
+    else                             el.className = 'wp-choice';
+  });
+
+  const fb = document.getElementById(`wpfb-${id}`);
+  if (chosen === wp.correct) {
+    fb.innerHTML = `<span style="color:#27A864;font-weight:600">✓ Correct!&nbsp;</span><span style="color:var(--muted);font-size:13px">${wp.explain}</span>`;
+  } else {
+    fb.innerHTML = `<span style="color:var(--coral);font-weight:600">✗ Not quite.&nbsp;</span><span style="color:var(--muted);font-size:13px">${wp.explain}</span>`;
+  }
+}
+
+// ── BUILD REFERENCE TABLE ───────────────────────────────────────────────
+function buildRefTable() {
+  const tbody = document.getElementById('ref-table');
+  REF_ROWS.forEach(([n,d]) => {
+    const half = d/2;
+    const rel = n < half ? '<' : n > half ? '>' : '=';
+    const badge = n < half ?
+      '<span class="badge badge-no">Less than ½</span>' :
+      (n > half ?
+        '<span class="badge badge-ok">Greater than ½</span>' :
+        '<span class="badge" style="background:#FEF3E8;color:#B86A00">Equal to ½</span>');
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td style="font-weight:700;font-size:20px">${f(n,d)}</td>
+      <td>Half of ${d} = <strong>${half}</strong></td>
+      <td>${n} ${rel} ${half}</td>
+      <td>${badge}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+// ── NAV HIGHLIGHT ────────────────────────────────────────────────────────
+const sections = document.querySelectorAll('section[id]');
+const navLinks  = document.querySelectorAll('.nav-link');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#'+id);
+      });
+    }
+  });
+}, { threshold:.4 });
+sections.forEach(s => obs.observe(s));
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+buildProblems();
+buildWordProblems();
+buildRefTable();
+</script>
+</body>
+</html>
